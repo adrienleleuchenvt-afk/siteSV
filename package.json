@@ -1,0 +1,13 @@
+{
+  "name": "clinique-veto-parc",
+  "version": "1.0.0",
+  "description": "Site clinique vétérinaire avec formulaire de référencement - Cloudflare Pages",
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

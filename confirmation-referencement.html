@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Référencement Vétérinaire | Sancéa Vet - Troyes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        /* Styles spécifiques à la page de confirmation */
+        .main-content { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 8rem 2rem 4rem; background: linear-gradient(135deg, var(--bg-alt) 0%, white 50%, var(--primary-light) 100%); }
+        .confirmation-card { background: white; border-radius: 24px; padding: 4rem 3rem; box-shadow: var(--shadow-lg); max-width: 600px; width: 100%; text-align: center; border: 1px solid var(--primary-light); }
+        .success-icon { width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; font-size: 3rem; color: white; animation: scaleIn 0.5s ease-out; }
+        @keyframes scaleIn { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+        .confirmation-card h1 { font-size: 2rem; color: var(--text); margin-bottom: 1rem; }
+        .confirmation-card > p { color: var(--text-light); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8; }
+        .details-box { background: var(--bg-alt); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; text-align: left; }
+        .details-box h3 { font-size: 1rem; color: var(--primary-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .details-box ul { list-style: none; display: grid; gap: 0.75rem; }
+        .details-box li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.95rem; color: var(--text-light); }
+        .details-box li .icon { color: var(--primary); font-size: 1.1rem; flex-shrink: 0; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; border: none; cursor: pointer; font-family: inherit; font-size: 1rem; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: var(--shadow); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .btn-secondary { background: white; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-secondary:hover { background: var(--primary-light); transform: translateY(-2px); }
+        @media (max-width: 768px) { .confirmation-card { padding: 2.5rem 1.5rem; } .confirmation-card h1 { font-size: 1.5rem; } .btn-group { flex-direction: column; } .btn { width: 100%; justify-content: center; } }
+    </style>
+    <meta name="description" content="Sancéa Vet - Clinique vétérinaire à Saint-Julien-les-Villas près de Troyes (10). Dr Adrien Le Leuch, Dr Lucie Lengellé, Dr Alexis Racine, Dr Maxime Bousses.">
+    <meta name="keywords" content="vétérinaire Troyes, vétérinaire Saint-Julien-les-Villas, Sancéa Vet, Dr Adrien Le Leuch, Dr Lucie Lengellé, Dr Alexis Racine, Dr Maxime Bousses">
+    <meta name="author" content="Sancéa Vet">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sanceavet.fr/confirmation-referencement.html">
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><span>🐾</span>Sancéa Vet</a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#a-propos">À propos</a></li>
+                <li><a href="index.html#equipe">Équipe</a></li>
+                <li><a href="index.html#actualites">Actualités</a></li>
+                <li><a href="referencement-veterinaire.html">Référencement</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="confirmation-card">
+            <div class="success-icon">✅</div>
+            <h1>Dossier transmis avec succès !</h1>
+            <p>Votre référencement a été envoyé à <strong>refere@sanceavet.fr</strong>. Notre équipe examinera le dossier dans les plus brefs délais et vous contactera directement.</p>
+
+            <div class="details-box">
+                <h3>📋 Prochaines étapes</h3>
+                <ul>
+                    <li><span class="icon">⏱️</span><span>Accusé de réception sous 2 heures ouvrées</span></li>
+                    <li><span class="icon">📞</span><span>Contact téléphonique avec le propriétaire sous 24h</span></li>
+                    <li><span class="icon">📅</span><span>Proposition de rendez-vous sous 48h</span></li>
+                    <li><span class="icon">🤝</span><span>Compte-rendu détaillé transmis au vétérinaire référent</span></li>
+                </ul>
+            </div>
+
+            <div class="btn-group">
+                <a href="referencement-veterinaire.html" class="btn btn-secondary">📋 Nouveau référencement</a>
+                <a href="index.html" class="btn btn-primary">🏠 Retour à l'accueil</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>🐾 Sancéa Vet</h3>
+                <p>Votre partenaire santé pour vos animaux de compagnie depuis 2015. Engagement, compassion et excellence médicale.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="index.html#services">Nos services</a></li>
+                    <li><a href="index.html#equipe">L'équipe</a></li>
+                    <li><a href="index.html#actualites">Actualités</a></li>
+                    <li><a href="referencement-veterinaire.html">Référencement</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="#">Mentions légales</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                    <li><a href="#">CGV</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Sancéa Vet. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
