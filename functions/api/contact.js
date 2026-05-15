@@ -25,7 +25,7 @@ export async function onRequestPost(context) {
       });
     }
 
-    const fromEmail = env.FROM_EMAIL || 'onboarding@resend.dev';
+    const fromEmail = env.FROM_EMAIL || 'contact@sanceavet.fr';
     const toEmail = env.TO_EMAIL || 'adrien.leleuch.envt@gmail.com';
 
     const res = await fetch('https://api.resend.com/emails', {
