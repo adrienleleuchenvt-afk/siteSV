@@ -398,32 +398,34 @@
                 </div>
 
                 <div class="contact-form fade-in">
-                    <form onsubmit="event.preventDefault(); alert('Message envoyé ! Nous vous contacterons rapidement.');">
-                        <div class="form-group">
-                            <label for="name">Nom complet</label>
-                            <input type="text" id="name" placeholder="Votre nom" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="votre@email.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="animal">Type d'animal</label>
-                            <select id="animal" required>
-                                <option value="">Sélectionnez</option>
-                                <option value="chien">Chien</option>
-                                <option value="chat">Chat</option>
-                                <option value="lapin">Lapin/NAC</option>
-                                <option value="oiseau">Oiseau</option>
-                                <option value="autre">Autre</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" placeholder="Décrivez vos besoins..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn-submit">Envoyer la demande</button>
-                    </form>
+<form id="contactForm">
+    <input type="text" id="website" name="website" style="display:none" tabindex="-1" autocomplete="off">
+    
+    <div class="form-group">
+        <label for="name">Nom complet</label>
+        <input type="text" id="name" placeholder="Votre nom" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="votre@email.com" required>
+    </div>
+    <div class="form-group">
+        <label for="animal">Type d'animal</label>
+        <select id="animal" required>
+            <option value="">Sélectionnez</option>
+            <option value="chien">Chien</option>
+            <option value="chat">Chat</option>
+            <option value="lapin">Lapin/NAC</option>
+            <option value="oiseau">Oiseau</option>
+            <option value="autre">Autre</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Décrivez vos besoins..." required></textarea>
+    </div>
+    <button type="submit" class="btn-submit">Envoyer la demande</button>
+</form>
                 </div>
             </div>
         </div>
@@ -460,7 +462,7 @@
     </footer>
 
     
-
+<script src="assets/js/contact.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
