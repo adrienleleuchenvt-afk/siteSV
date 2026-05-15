@@ -17,4 +17,4 @@ TO_EMAIL = "refere@sanceavet.fr"
 # RESEND_API_KEY = votre_clé_api_resend
 # HCATCHA_SECRET = votre_clé_secrète_hcaptcha
 [assets]
-directory = "./dist"
+directory = "./assets"
