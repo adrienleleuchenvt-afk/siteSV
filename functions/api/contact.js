@@ -35,8 +35,8 @@ export async function onRequestPost(context) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: env.FROM_EMAIL || 'onboarding@resend.dev',
-        to: [env.TO_EMAIL || 'contact@cliniqueveto-parc.fr'],
+        from: env.FROM_EMAIL || 'contact@sanceavet.fr',
+        to: [env.TO_EMAIL || 'adrien.leleuch.envt@gmail.com'],
         reply_to: formData.email,
         subject: `Nouveau message de ${formData.name} - Clinique Veto`,
         html: `
