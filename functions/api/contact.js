@@ -17,7 +17,6 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Honeypot anti-spam
     if (formData.website) {
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
@@ -38,23 +37,21 @@ export async function onRequestPost(context) {
         from: fromEmail,
         to: [toEmail],
         reply_to: formData.email,
-        subject: `Nouveau message de ${formData.name} - Clinique Veto`,
-        html: `<h2>Nouveau message depuis le formulaire</h2>
+        subject: `Nouveau message de ${formData.name} - formulaire de contact`,
+        html: `<h2>Nouveau message depuis le formulaire de contact</h2>
           <p><strong>Nom :</strong> ${escapeHtml(formData.name)}</p>
           <p><strong>Email :</strong> ${escapeHtml(formData.email)}</p>
-          <p><strong>Type d'animal :</strong> ${escapeHtml(formData.animal || 'Non spécifié')}</p>
+          <p><strong>Type d&#39;animal :</strong> ${escapeHtml(formData.animal || 'Non specifie')}</p>
           <p><strong>Message :</strong></p>
-          <p>${escapeHtml(formData.message).replace(/\n/g, '<br>')}</p>`
+          <p>${escapeHtml(formData.message).split('\n').join('<br>')}</p>`
       })
     });
 
     if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
+      const err = await res.json().catch(() => ({}));
       return new Response(JSON.stringify({
-      error: err.message || "Erreur lors de l\'envoi"
-        status: 502,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders }
-      });
+        error: err.message || 'Erreur lors de l envoi'
+      }), { status: 502, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
     }
 
     const data = await res.json();
@@ -65,7 +62,7 @@ export async function onRequestPost(context) {
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
+    return new Response(JSON.stringify({ error: 'Erreur serveur' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
