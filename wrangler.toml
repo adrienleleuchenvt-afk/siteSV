@@ -1,7 +1,7 @@
 # Configuration Cloudflare Pages + Workers
 # Déployez avec : npx wrangler pages deploy
 
-name = "sancea-vet"
+name = "sanceavet"
 compatibility_date = "2026-05-14"
 compatibility_flags = ["nodejs_compat"]
 
