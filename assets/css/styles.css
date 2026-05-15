@@ -1024,3 +1024,81 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+/* Service Cards Clickable */
+.service-card {
+    cursor: pointer;
+}
+
+.service-card .view-more {
+    display: inline-block;
+    margin-top: 0.75rem;
+    color: var(--text-light);
+    font-size: 0.8rem;
+    font-style: italic;
+    transition: color 0.3s;
+}
+
+.service-card:hover .view-more {
+    color: var(--primary);
+}
+
+/* Service Modal Specifics */
+.service-modal-header {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 0;
+    align-items: center;
+}
+
+.service-modal-icon {
+    width: 100%;
+    height: 100%;
+    min-height: 140px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    border-radius: 24px 0 0 0;
+}
+
+.service-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.service-info-item {
+    background: var(--bg-alt);
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.service-info-item .label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.service-info-item .value {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 968px) {
+    .service-modal-header {
+        grid-template-columns: 1fr;
+    }
+    .service-modal-icon {
+        height: 140px;
+        border-radius: 24px 24px 0 0;
+    }
+    .service-info-grid {
+        grid-template-columns: 1fr;
+    }
+}

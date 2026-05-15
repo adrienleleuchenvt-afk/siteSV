@@ -59,35 +59,41 @@
                 <p>Une gamme complète de soins vétérinaires pour tous vos animaux de compagnie</p>
             </div>
             <div class="services-grid">
-                <div class="service-card fade-in">
+                <div class="service-card fade-in" onclick="openServiceModal('consultations')">
                     <div class="service-icon">🏥</div>
                     <h3>Consultations</h3>
                     <p>Examens complets, bilans de santé et suivis personnalisés pour préserver la santé de votre animal au quotidien.</p>
+                    <span class="view-more">Cliquez pour en savoir plus →</span>
                 </div>
-                <div class="service-card fade-in">
+                <div class="service-card fade-in" onclick="openServiceModal('vaccinations')">
                     <div class="service-icon">💉</div>
                     <h3>Vaccinations</h3>
                     <p>Programme de vaccination à jour selon les recommandations officielles pour protéger votre compagnon.</p>
+                    <span class="view-more">Cliquez pour en savoir plus →</span>
                 </div>
-                <div class="service-card fade-in">
+                <div class="service-card fade-in" onclick="openServiceModal('chirurgie')">
                     <div class="service-icon">🔬</div>
                     <h3>Chirurgie</h3>
                     <p>Bloc opératoire moderne avec équipement de pointe pour des interventions en toute sécurité.</p>
+                    <span class="view-more">Cliquez pour en savoir plus →</span>
                 </div>
-                <div class="service-card fade-in">
+                <div class="service-card fade-in" onclick="openServiceModal('dentisterie')">
                     <div class="service-icon">🦷</div>
                     <h3>Dentisterie</h3>
                     <p>Soins dentaires préventifs et curatifs pour éviter les problèmes bucco-dentaires courants.</p>
+                    <span class="view-more">Cliquez pour en savoir plus →</span>
                 </div>
-                <div class="service-card fade-in">
+                <div class="service-card fade-in" onclick="openServiceModal('imagerie')">
                     <div class="service-icon">🩺</div>
                     <h3>Imagerie Médicale</h3>
                     <p>Radiographie et échographie sur place pour un diagnostic rapide et précis.</p>
+                    <span class="view-more">Cliquez pour en savoir plus →</span>
                 </div>
-                <div class="service-card fade-in">
+                <div class="service-card fade-in" onclick="openServiceModal('urgences')">
                     <div class="service-icon">🚑</div>
                     <h3>Urgences 24/7</h3>
                     <p>Service d'urgences disponible 24h/24 et 7j/7 pour les situations critiques.</p>
+                    <span class="view-more">Cliquez pour en savoir plus →</span>
                 </div>
             </div>
         </div>
@@ -188,6 +194,34 @@
                 <div class="modal-section">
                     <h4>⭐ Spécialités</h4>
                     <p id="modalSpecialties"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div class="modal-overlay" id="serviceModal" onclick="closeServiceModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeServiceModal()">✕</button>
+            <div class="modal-header service-modal-header">
+                <div class="service-modal-icon" id="serviceModalIcon"></div>
+                <div class="modal-header-info">
+                    <h3 id="serviceModalTitle"></h3>
+                    <p class="role" id="serviceModalSubtitle"></p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>📋 Description</h4>
+                    <p id="serviceModalDesc"></p>
+                </div>
+                <div class="modal-section">
+                    <h4>✅ Ce qui est inclus</h4>
+                    <ul class="diploma-list" id="serviceModalIncludes"></ul>
+                </div>
+                <div class="modal-section">
+                    <h4>ℹ️ Informations pratiques</h4>
+                    <div class="service-info-grid" id="serviceModalInfo"></div>
                 </div>
             </div>
         </div>
