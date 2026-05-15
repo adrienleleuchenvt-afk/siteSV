@@ -39,7 +39,7 @@ export async function onRequestPost(context) {
         to: [toEmail],
         reply_to: formData.email,
         subject: `Nouveau message de ${formData.name} - Clinique Veto`,
-        html: `<h2>Nouveau message depuis le formulaire de contact</h2>
+        html: `<h2>Nouveau message depuis le formulaire</h2>
           <p><strong>Nom :</strong> ${escapeHtml(formData.name)}</p>
           <p><strong>Email :</strong> ${escapeHtml(formData.email)}</p>
           <p><strong>Type d'animal :</strong> ${escapeHtml(formData.animal || 'Non spécifié')}</p>
@@ -49,10 +49,13 @@ export async function onRequestPost(context) {
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
+      const errData = await res.json().catch(() => ({}));
       return new Response(JSON.stringify({
-        error: err.message || 'Erreur lors de l'envoi'
-      }), { status: 502, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+        error: errData.message || 'Erreur lors de l'envoi via Resend'
+      }), {
+        status: 502,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
     }
 
     const data = await res.json();
@@ -63,7 +66,7 @@ export async function onRequestPost(context) {
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Erreur serveur' }), {
+    return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
