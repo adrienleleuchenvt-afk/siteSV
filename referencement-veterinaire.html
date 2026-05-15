@@ -6,12 +6,9 @@
     <title>Référencement Vétérinaire | Sancéa Vet - Troyes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <!-- hCaptcha -->
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        /* Styles spécifiques au formulaire de référencement */
         .hero { min-height: 45vh; background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); display: flex; align-items: center; position: relative; overflow: hidden; }
         .hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: rgba(255,255,255,0.05); border-radius: 50%; }
         .hero-container { max-width: 1200px; margin: 0 auto; padding: 8rem 2rem 3rem; position: relative; z-index: 1; text-align: center; color: white; }
@@ -51,9 +48,6 @@
         .file-item .file-size { font-size: 0.8rem; color: var(--text-light); }
         .file-item .file-remove { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem; padding: 0.25rem; transition: transform 0.2s; }
         .file-item .file-remove:hover { transform: scale(1.2); }
-        .upload-progress { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; margin-top: 0.5rem; overflow: hidden; display: none; }
-        .upload-progress .progress-bar { height: 100%; width: 0%; background: var(--primary); border-radius: 2px; transition: width 0.3s; }
-        .captcha-container { display: flex; justify-content: center; margin: 1.5rem 0; }
         .form-submit { margin-top: 2rem; text-align: center; }
         .btn-submit { padding: 1rem 3rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.75rem; }
         .btn-submit:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
@@ -65,6 +59,8 @@
         .message.success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
         .message.error { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
         .message .msg-icon { font-size: 1.25rem; }
+        /* Honeypot caché */
+        .hp-field { display: none !important; visibility: hidden; opacity: 0; position: absolute; left: -9999px; }
         @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .form-wrapper { padding: 1.5rem; } .hero-container { padding: 7rem 1.5rem 2rem; } }
     </style>
     <meta name="description" content="Sancéa Vet - Clinique vétérinaire à Saint-Julien-les-Villas près de Troyes (10). Dr Adrien Le Leuch, Dr Lucie Lengellé, Dr Alexis Racine, Dr Maxime Bousses.">
@@ -87,6 +83,7 @@
                 <li><a href="index.html#a-propos">À propos</a></li>
                 <li><a href="index.html#equipe">Équipe</a></li>
                 <li><a href="index.html#actualites">Actualités</a></li>
+                <li><a href="referencement-veterinaire.html">Référencement</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
         </div>
@@ -140,7 +137,13 @@
                     <span id="errorText">Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous contacter par téléphone.</span>
                 </div>
 
-                <form id="referralForm" enctype="multipart/form-data">
+                <form id="referralForm">
+                    <!-- Honeypot anti-spam -->
+                    <div class="form-group hp-field">
+                        <label for="website">Site web</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+
                     <h3 style="font-family:'Playfair Display',serif; font-size:1.25rem; margin:2rem 0 1rem; color:var(--primary-dark);">Informations du vétérinaire référent</h3>
                     <div class="form-grid">
                         <div class="form-group">
@@ -251,19 +254,13 @@
                     <h3 style="font-family:'Playfair Display',serif; font-size:1.25rem; margin:2rem 0 1rem; color:var(--primary-dark);">Pièces jointes</h3>
                     <div class="form-group full-width">
                         <label>Documents et images médicaux</label>
-                        <div class="file-upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                        <div class="file-upload-area" id="dropZone">
                             <span class="upload-icon">📁</span>
                             <p><strong>Cliquez pour sélectionner</strong> ou glissez-déposez vos fichiers ici</p>
                             <p class="upload-hint">JPG, PNG, PDF — Max 10 Mo par fichier — Max 5 fichiers</p>
                             <input type="file" id="fileInput" name="attachments" multiple accept=".jpg,.jpeg,.png,.pdf">
                         </div>
-                        <div class="upload-progress" id="uploadProgress"><div class="progress-bar" id="progressBar"></div></div>
                         <div class="file-list" id="fileList"></div>
-                    </div>
-
-                    <!-- hCaptcha -->
-                    <div class="captcha-container">
-                        <div class="h-captcha" data-sitekey="VOTRE_SITE_KEY_HCATCHA" data-callback="onCaptchaSuccess" data-expired-callback="onCaptchaExpired"></div>
                     </div>
 
                     <div class="form-submit">
@@ -307,8 +304,156 @@
         </div>
     </footer>
 
-    
+    <script>
+    (function() {
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const form = document.getElementById('referralForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const btnText = document.getElementById('btnText');
+        const successMsg = document.getElementById('successMsg');
+        const errorMsg = document.getElementById('errorMsg');
+        const errorText = document.getElementById('errorText');
 
+        let filesQueue = [];
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' o';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+        }
+
+        function handleFiles(fileListObj) {
+            const newFiles = Array.from(fileListObj).filter(f => {
+                const valid = ['image/jpeg','image/png','application/pdf'].includes(f.type);
+                const notDup = !filesQueue.some(q => q.name === f.name && q.size === f.size);
+                return valid && notDup;
+            });
+            if (filesQueue.length + newFiles.length > 5) {
+                alert('Maximum 5 fichiers autorisés.');
+                return;
+            }
+            filesQueue = filesQueue.concat(newFiles);
+            renderFiles();
+        }
+
+        function renderFiles() {
+            fileList.innerHTML = '';
+            filesQueue.forEach((file, idx) => {
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.innerHTML = `
+                    <span class="file-icon">${file.type === 'application/pdf' ? '📄' : '🖼️'}</span>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatSize(file.size)}</div>
+                    </div>
+                    <button type="button" class="file-remove" data-idx="${idx}">✕</button>
+                `;
+                fileList.appendChild(item);
+            });
+            document.querySelectorAll('.file-remove').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filesQueue.splice(parseInt(btn.dataset.idx), 1);
+                    renderFiles();
+                });
+            });
+        }
+
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            successMsg.classList.remove('show');
+            errorMsg.classList.remove('show');
+
+            submitBtn.disabled = true;
+            btnSpinner.style.display = 'inline-block';
+            btnText.textContent = 'Envoi en cours...';
+
+            try {
+                const attachments = [];
+                for (const file of filesQueue) {
+                    const content = await readFileAsBase64(file);
+                    attachments.push({ filename: file.name, content: content });
+                }
+
+                const payload = {
+                    website: form.website.value,
+                    vetName: form.vetName.value,
+                    vetEmail: form.vetEmail.value,
+                    vetPhone: form.vetPhone.value,
+                    clinicName: form.clinicName.value,
+                    clinicAddress: form.clinicAddress.value,
+                    ownerName: form.ownerName.value,
+                    ownerPhone: form.ownerPhone.value,
+                    patientName: form.patientName.value,
+                    patientSpecies: form.patientSpecies.value,
+                    patientBreed: form.patientBreed.value,
+                    patientAge: form.patientAge.value,
+                    patientSex: form.patientSex.value,
+                    patientWeight: form.patientWeight.value,
+                    referralReason: form.referralReason.value,
+                    clinicalHistory: form.clinicalHistory.value,
+                    treatments: form.treatments.value,
+                    additionalInfo: form.additionalInfo.value,
+                    attachments: attachments
+                };
+
+                const res = await fetch('/api/referral', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    successMsg.classList.add('show');
+                    form.reset();
+                    filesQueue = [];
+                    renderFiles();
+                    setTimeout(() => {
+                        window.location.href = 'confirmation-referencement.html';
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Erreur lors de l\'envoi');
+                }
+            } catch (err) {
+                errorText.textContent = err.message || 'Une erreur est survenue. Veuillez réessayer.';
+                errorMsg.classList.add('show');
+            } finally {
+                submitBtn.disabled = false;
+                btnSpinner.style.display = 'none';
+                btnText.textContent = '📨 Envoyer le dossier de référencement';
+            }
+        });
+    })();
+    </script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
