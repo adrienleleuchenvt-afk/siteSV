@@ -51,8 +51,7 @@ export async function onRequestPost(context) {
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
       return new Response(JSON.stringify({
-        error: errData.message || 'Erreur lors de l'envoi via Resend'
-      }), {
+      error: err.message || "Erreur lors de l\'envoi"
         status: 502,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
       });
