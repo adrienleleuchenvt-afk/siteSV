@@ -305,155 +305,153 @@
     </footer>
 
     <script>
-    (function() {
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const form = document.getElementById('referralForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const btnSpinner = document.getElementById('btnSpinner');
-        const btnText = document.getElementById('btnText');
-        const successMsg = document.getElementById('successMsg');
-        const errorMsg = document.getElementById('errorMsg');
-        const errorText = document.getElementById('errorText');
+(function() {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const form = document.getElementById('referralForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const btnText = document.getElementById('btnText');
+    const successMsg = document.getElementById('successMsg');
+    const errorMsg = document.getElementById('errorMsg');
+    const errorText = document.getElementById('errorText');
 
-        let filesQueue = [];
+    let filesQueue = [];
 
-        dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault(); dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('dragover');
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' o';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+    }
+
+    function handleFiles(fileListObj) {
+        const newFiles = Array.from(fileListObj).filter(f => {
+            const valid = ['image/jpeg','image/png','application/pdf'].includes(f.type);
+            const notDup = !filesQueue.some(q => q.name === f.name && q.size === f.size);
+            return valid && notDup;
         });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('dragover');
-            handleFiles(e.dataTransfer.files);
-        });
-
-        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-
-        function formatSize(bytes) {
-            if (bytes < 1024) return bytes + ' o';
-            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
-            return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+        if (filesQueue.length + newFiles.length > 5) {
+            alert('Maximum 5 fichiers.'); return;
         }
+        filesQueue = filesQueue.concat(newFiles);
+        renderFiles();
+    }
 
-        function handleFiles(fileListObj) {
-            const newFiles = Array.from(fileListObj).filter(f => {
-                const valid = ['image/jpeg','image/png','application/pdf'].includes(f.type);
-                const notDup = !filesQueue.some(q => q.name === f.name && q.size === f.size);
-                return valid && notDup;
+    function renderFiles() {
+        fileList.innerHTML = '';
+        filesQueue.forEach((file, idx) => {
+            const item = document.createElement('div');
+            item.className = 'file-item';
+            item.innerHTML = `
+                <span class="file-icon">${file.type === 'application/pdf' ? '📄' : '🖼️'}</span>
+                <div class="file-info">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-size">${formatSize(file.size)}</div>
+                </div>
+                <button type="button" class="file-remove" data-idx="${idx}">✕</button>
+            `;
+            fileList.appendChild(item);
+        });
+        document.querySelectorAll('.file-remove').forEach(btn => {
+            btn.addEventListener('click', () => {
+                filesQueue.splice(parseInt(btn.dataset.idx), 1);
+                renderFiles();
             });
-            if (filesQueue.length + newFiles.length > 5) {
-                alert('Maximum 5 fichiers autorisés.');
-                return;
+        });
+    }
+
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        successMsg.classList.remove('show');
+        errorMsg.classList.remove('show');
+
+        submitBtn.disabled = true;
+        btnSpinner.style.display = 'inline-block';
+        btnText.textContent = 'Envoi en cours...';
+
+        try {
+            const hp = form.querySelector('input[name="website"]');
+            if (hp) hp.value = '';
+
+            const attachments = [];
+            for (const file of filesQueue) {
+                const content = await readFileAsBase64(file);
+                attachments.push({ filename: file.name, content: content });
             }
-            filesQueue = filesQueue.concat(newFiles);
+
+            const payload = {
+                formType: 'referral',  // ← Route vers refere@sanceavet.fr
+                website: hp ? hp.value : '',
+                vetName: form.vetName.value,
+                vetEmail: form.vetEmail.value,
+                vetPhone: form.vetPhone.value,
+                clinicName: form.clinicName.value,
+                clinicAddress: form.clinicAddress.value,
+                ownerName: form.ownerName.value,
+                ownerPhone: form.ownerPhone.value,
+                patientName: form.patientName.value,
+                patientSpecies: form.patientSpecies.value,
+                patientBreed: form.patientBreed.value,
+                patientAge: form.patientAge.value,
+                patientSex: form.patientSex.value,
+                patientWeight: form.patientWeight.value,
+                referralReason: form.referralReason.value,
+                clinicalHistory: form.clinicalHistory.value,
+                treatments: form.treatments.value,
+                additionalInfo: form.additionalInfo.value,
+                attachments: attachments
+            };
+
+            const res = await fetch('/api/contact', {  // ← Même endpoint que le contact
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.success) {
+                alert(`ERREUR ${res.status}:\n${JSON.stringify(data, null, 2)}`);
+                throw new Error(data.error || `HTTP ${res.status}`);
+            }
+
+            successMsg.classList.add('show');
+            form.reset();
+            filesQueue = [];
             renderFiles();
+            setTimeout(() => {
+                window.location.href = 'confirmation-referencement.html';
+            }, 2000);
+
+        } catch (err) {
+            errorText.textContent = err.message;
+            errorMsg.classList.add('show');
+        } finally {
+            submitBtn.disabled = false;
+            btnSpinner.style.display = 'none';
+            btnText.textContent = '📨 Envoyer le dossier de référencement';
         }
-
-        function renderFiles() {
-            fileList.innerHTML = '';
-            filesQueue.forEach((file, idx) => {
-                const item = document.createElement('div');
-                item.className = 'file-item';
-                item.innerHTML = `
-                    <span class="file-icon">${file.type === 'application/pdf' ? '📄' : '🖼️'}</span>
-                    <div class="file-info">
-                        <div class="file-name">${file.name}</div>
-                        <div class="file-size">${formatSize(file.size)}</div>
-                    </div>
-                    <button type="button" class="file-remove" data-idx="${idx}">✕</button>
-                `;
-                fileList.appendChild(item);
-            });
-            document.querySelectorAll('.file-remove').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filesQueue.splice(parseInt(btn.dataset.idx), 1);
-                    renderFiles();
-                });
-            });
-        }
-
-        function readFileAsBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            successMsg.classList.remove('show');
-            errorMsg.classList.remove('show');
-
-            submitBtn.disabled = true;
-            btnSpinner.style.display = 'inline-block';
-            btnText.textContent = 'Envoi en cours...';
-
-            try {
-                const attachments = [];
-                for (const file of filesQueue) {
-                    const content = await readFileAsBase64(file);
-                    attachments.push({ filename: file.name, content: content });
-                }
-
-                const payload = {
-                    website: form.website.value,
-                    vetName: form.vetName.value,
-                    vetEmail: form.vetEmail.value,
-                    vetPhone: form.vetPhone.value,
-                    clinicName: form.clinicName.value,
-                    clinicAddress: form.clinicAddress.value,
-                    ownerName: form.ownerName.value,
-                    ownerPhone: form.ownerPhone.value,
-                    patientName: form.patientName.value,
-                    patientSpecies: form.patientSpecies.value,
-                    patientBreed: form.patientBreed.value,
-                    patientAge: form.patientAge.value,
-                    patientSex: form.patientSex.value,
-                    patientWeight: form.patientWeight.value,
-                    referralReason: form.referralReason.value,
-                    clinicalHistory: form.clinicalHistory.value,
-                    treatments: form.treatments.value,
-                    additionalInfo: form.additionalInfo.value,
-                    attachments: attachments
-                };
-
-                const res = await fetch('/api/referral', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const data = await res.json();
-
-                if (res.ok && data.success) {
-                    successMsg.classList.add('show');
-                    form.reset();
-                    filesQueue = [];
-                    renderFiles();
-                    setTimeout(() => {
-                        window.location.href = 'confirmation-referencement.html';
-                    }, 2000);
-                } else {
-                    throw new Error(data.error || 'Erreur lors de l\'envoi');
-                }
-            } catch (err) {
-                errorText.textContent = err.message || 'Une erreur est survenue. Veuillez réessayer.';
-                errorMsg.classList.add('show');
-            } finally {
-                submitBtn.disabled = false;
-                btnSpinner.style.display = 'none';
-                btnText.textContent = '📨 Envoyer le dossier de référencement';
-            }
-        });
-    })();
-    </script>
+    });
+})();
+</script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
