@@ -63,6 +63,7 @@
         .hp-field { display: none !important; visibility: hidden; opacity: 0; position: absolute; left: -9999px; }
         @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .form-wrapper { padding: 1.5rem; } .hero-container { padding: 7rem 1.5rem 2rem; } }
     </style>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <meta name="description" content="Sancéa Vet - Clinique vétérinaire à Saint-Julien-les-Villas près de Troyes (10). Dr Adrien Le Leuch, Dr Lucie Lengellé, Dr Alexis Racine, Dr Maxime Bousses.">
     <meta name="keywords" content="vétérinaire Troyes, vétérinaire Saint-Julien-les-Villas, Sancéa Vet, Dr Adrien Le Leuch, Dr Lucie Lengellé, Dr Alexis Racine, Dr Maxime Bousses">
     <meta name="author" content="Sancéa Vet">
@@ -138,6 +139,7 @@
                 </div>
 
                 <form id="referralForm">
+                    <input type="hidden" name="turnstileToken" id="turnstileToken" value="">
                     <!-- Honeypot anti-spam -->
                     <div class="form-group hp-field">
                         <label for="website">Site web</label>
@@ -264,6 +266,7 @@
                     </div>
 
                     <div class="form-submit">
+                        <div id="turnstileWidget" style="margin-bottom:1rem;"></div>
                         <button type="submit" class="btn-submit" id="submitBtn">
                             <span class="spinner" id="btnSpinner"></span>
                             <span id="btnText">📨 Envoyer le dossier de référencement</span>
@@ -378,6 +381,21 @@
         });
     }
 
+    // Render Turnstile widget when API is available
+    function renderTurnstile() {
+        if (!window.turnstile) return;
+        try {
+            window.turnstile.render(document.getElementById('turnstileWidget'), {
+                sitekey:'0x4AAAAAADQiVSCf-gskcVGP', // <-- Remplacez par votre site key
+                callback: (token) => { document.getElementById('turnstileToken').value = token; }
+            });
+        } catch (e) {
+            // ignore
+        }
+    }
+
+    window.addEventListener('load', () => renderTurnstile());
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         successMsg.classList.remove('show');
@@ -417,7 +435,8 @@
                 clinicalHistory: form.clinicalHistory.value,
                 treatments: form.treatments.value,
                 additionalInfo: form.additionalInfo.value,
-                attachments: attachments
+                attachments: attachments,
+                turnstileToken: form.turnstileToken ? form.turnstileToken.value : ''
             };
 
             const res = await fetch('/api/contact', {  // ← Même endpoint que le contact

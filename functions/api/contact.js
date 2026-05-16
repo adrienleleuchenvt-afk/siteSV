@@ -10,6 +10,36 @@ export async function onRequestPost(context) {
   try {
     const formData = await request.json();
 
+    // Vérification Cloudflare Turnstile
+    const turnstileToken = formData.turnstileToken;
+    if (!turnstileToken) {
+      return new Response(JSON.stringify({ error: 'Vérification humaine requise' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
+    if (!env.TURNSTILE_SECRET) {
+      return new Response(JSON.stringify({ error: 'TURNSTILE_SECRET manquant' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
+    const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: turnstileToken }).toString()
+    });
+
+    const verifyJson = await verifyRes.json();
+    if (!verifyJson.success) {
+      return new Response(JSON.stringify({ error: 'Échec de la vérification Turnstile', details: verifyJson['error-codes'] || null }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
     // Honeypot anti-spam
     if (formData.website && String(formData.website).trim() !== '') {
       return new Response(JSON.stringify({ success: true }), {
