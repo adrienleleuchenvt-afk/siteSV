@@ -101,6 +101,14 @@ ${escapeHtml(formData.message).replace(/\n/g, '<br>')}
       html: htmlBody
     };
 
+    // Ajouter les pièces jointes si présentes
+    if (isReferral && formData.attachments && Array.isArray(formData.attachments) && formData.attachments.length > 0) {
+      resendPayload.attachments = formData.attachments.map(att => ({
+        filename: att.filename,
+        content: Buffer.from(att.content, 'base64')
+      }));
+    }
+
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
