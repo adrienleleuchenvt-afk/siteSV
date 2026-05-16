@@ -28,10 +28,10 @@ export async function onRequestPost(context) {
     const isReferral = formData.formType === 'referral';
 
     const toEmail = isReferral
-      ? (env.REFERRAL_TO_EMAIL || 'adrien.leleuch.envt@gmail.com')
+      ? (env.REFERRAL_TO_EMAIL || 'aleleuch@icloud.com')
       : (env.TO_EMAIL || 'adrien.leleuch.envt@gmail.com');
 
-    const fromEmail = env.FROM_EMAIL || 'onboarding@resend.dev';
+    const fromEmail = env.FROM_EMAIL || 'contact@sanceavet.fr';
 
     let subject, htmlBody;
 
