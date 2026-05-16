@@ -4,26 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Decap CMS - Sancéa Vet</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <style>
-        body { margin: 0; font-family: Inter, sans-serif; background: #f7f7f7; }
-        .admin-shell { max-width: 1200px; margin: 48px auto; padding: 24px; background: white; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,.08); }
-        .admin-shell h1 { margin: 0 0 12px; font-size: clamp(2rem, 4vw, 3rem); }
-        .admin-shell p { margin: 0 0 24px; color: #555; line-height: 1.6; }
-        .admin-shell a { color: var(--primary); text-decoration: none; }
-    </style>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-    <div class="admin-shell">
-        <h1>Decap CMS</h1>
-        <p>Utilisez cette interface pour gérer les articles du blog. Connectez-vous avec votre compte GitHub ou via votre backend GitHub personnalisé.</p>
-        <p>Les articles sont stockés dans <code>data/posts.json</code>.</p>
-        <div id="decap-cms"></div>
-    </div>
-    <script>window.CMS_MANUAL_INIT = true;</script>
-    <script src="https://unpkg.com/@decapcms/decap-cms@^2.0.0/dist/decap-cms.js"></script>
+    <script src="https://unpkg.com/@decapcms/decap-cms@^3.0.0/dist/decap-cms.umd.js"></script>
     <script>
-        window.DecapCMS && window.DecapCMS.init({ config: '/admin/config.yml' });
+        if (window.CMS) {
+            window.CMS.init();
+        }
     </script>
 </body>
 </html>
