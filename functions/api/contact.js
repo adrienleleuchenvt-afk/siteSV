@@ -28,7 +28,7 @@ export async function onRequestPost(context) {
     const isReferral = formData.formType === 'referral';
 
     const toEmail = isReferral
-      ? (env.REFERRAL_TO_EMAIL || 'refere@sanceavet.fr')
+      ? (env.REFERRAL_TO_EMAIL || 'adrien.leleuch.envt@gmail.com')
       : (env.TO_EMAIL || 'adrien.leleuch.envt@gmail.com');
 
     const fromEmail = env.FROM_EMAIL || 'onboarding@resend.dev';
@@ -96,7 +96,7 @@ ${escapeHtml(formData.message).replace(/\n/g, '<br>')}
     const resendPayload = {
       from: fromEmail,
       to: [toEmail],
-      reply_to: isReferral ? formData.email : formData.email,
+      reply_to: isReferral ? formData.vetEmail : formData.email,
       subject,
       html: htmlBody
     };
