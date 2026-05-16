@@ -96,7 +96,7 @@ ${escapeHtml(formData.message).replace(/\n/g, '<br>')}
     const resendPayload = {
       from: fromEmail,
       to: [toEmail],
-      reply_to: isReferral ? formData.vetEmail : formData.email,
+      reply_to: isReferral ? formData.email : formData.email,
       subject,
       html: htmlBody
     };
