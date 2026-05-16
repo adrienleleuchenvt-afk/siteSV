@@ -1,8 +1,10 @@
 backend:
   name: github
-  repo: "adrienleleuchenvt-afk/siteSV"
+  repo: "adrienleleuchhenvt-afk/siteSV"
   branch: main
   auth_scope: public_repo
+  base_url: https://sitesv.pages.dev      # ← ton domaine Cloudflare Pages
+  auth_endpoint: /api/auth                    # ← chemin vers ta Function
 
 local_backend: true
 
