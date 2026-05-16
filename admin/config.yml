@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: "adrienleleuchenvt-afk/siteSV"
+  branch: main
+  auth_scope: public_repo
+
+media_folder: "assets/img"
+public_folder: "/assets/img"
+
+collections:
+  - name: "blog"
+    label: "Blog"
+    label_singular: "Article"
+    files:
+      - file: "data/posts.json"
+        label: "Articles du blog"
+        name: "posts"
+        fields:
+          - label: "Articles"
+            name: "posts"
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Slug", name: "slug", widget: "string", hint: "Ex. proteger-chien-chaleur-estivale" }
+              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Catégorie", name: "category", widget: "string" }
+              - { label: "Image", name: "image", widget: "image", required: false }
+              - { label: "Extrait", name: "excerpt", widget: "text" }
+              - { label: "Durée de lecture", name: "timeToRead", widget: "string", required: false }
+              - { label: "Contenu", name: "body", widget: "markdown" }
