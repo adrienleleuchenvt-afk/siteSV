@@ -386,7 +386,7 @@
         if (!window.turnstile) return;
         try {
             window.turnstile.render(document.getElementById('turnstileWidget'), {
-                sitekey:'0x4AAAAAADQiVSCf-gskcVGP', // <-- Remplacez par votre site key
+                sitekey:'1x00000000000000000000AA', // <-- Remplacez par votre site key
                 callback: (token) => { document.getElementById('turnstileToken').value = token; }
             });
         } catch (e) {
