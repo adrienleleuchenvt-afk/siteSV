@@ -10,7 +10,7 @@ export async function onRequestPost(context) {
   try {
     const formData = await request.json();
 
-    // Honeypot commun
+    // Honeypot anti-spam
     if (formData.website && String(formData.website).trim() !== '') {
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
@@ -25,11 +25,9 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Détection du type de formulaire
     const isReferral = formData.formType === 'referral';
 
-    // Destinataires
-    const toEmail = isReferral 
+    const toEmail = isReferral
       ? (env.REFERRAL_TO_EMAIL || 'refere@sanceavet.fr')
       : (env.TO_EMAIL || 'adrien.leleuch.envt@gmail.com');
 
@@ -38,8 +36,16 @@ export async function onRequestPost(context) {
     let subject, htmlBody;
 
     if (isReferral) {
-      // === FORMULAIRE RÉFÉRENCEMENT ===
-      if (!formData.vetName || !formData.vetEmail || !formData.clinicName || !formData.ownerName || !formData.patientName || !formData.patientSpecies || !formData.referralReason || !formData.clinicalHistory) {
+      if (
+        !formData.vetName ||
+        !formData.vetEmail ||
+        !formData.clinicName ||
+        !formData.ownerName ||
+        !formData.patientName ||
+        !formData.patientSpecies ||
+        !formData.referralReason ||
+        !formData.clinicalHistory
+      ) {
         return new Response(JSON.stringify({ error: 'Champs requis manquants' }), {
           status: 400,
           headers: { 'Content-Type': 'application/json', ...corsHeaders }
@@ -48,36 +54,25 @@ export async function onRequestPost(context) {
 
       subject = `Référencement — ${formData.patientName} (Dr ${formData.vetName})`;
 
-      htmlBody = `<h2>Référencement vétérinaire</h2>
-        <p><strong>Vétérinaire:</strong> ${escapeHtml(formData.vetName)}<<br>
-        <strong>Email:</strong> ${escapeHtml(formData.vetEmail)}<<br>
-        <strong>Téléphone:</strong> ${escapeHtml(formData.vetPhone || 'Non renseigné')}<<br>
-        <strong>Clinique:</strong> ${escapeHtml(formData.clinicName)}<<br>
-        <strong>Adresse:</strong> ${escapeHtml(formData.clinicAddress || 'Non renseignée')}</p>
+      htmlBody = `
+<h3>Référencement vétérinaire</h3>
 
-        <h3>Patient</h3>
-        <p><strong>Nom:</strong> ${escapeHtml(formData.patientName)}<<br>
-        <strong>Espèce:</strong> ${escapeHtml(formData.patientSpecies)}<<br>
-        <strong>Race:</strong> ${escapeHtml(formData.patientBreed || 'Non renseignée')}<<br>
-        <strong>Âge:</strong> ${escapeHtml(formData.patientAge || 'Non renseigné')}<<br>
-        <strong>Sexe:</strong> ${escapeHtml(formData.patientSex || 'Non renseigné')}<<br>
-        <strong>Poids:</strong> ${escapeHtml(formData.patientWeight || 'Non renseigné')} kg</p>
+<b>Vétérinaire:</b> ${escapeHtml(formData.vetName)}<br>
+<b>Email:</b> ${escapeHtml(formData.vetEmail)}<br>
+<b>Téléphone:</b> ${escapeHtml(formData.vetPhone || 'Non renseigné')}<br>
+<b>Clinique:</b> ${escapeHtml(formData.clinicName)}<br>
 
-        <h3>Propriétaire</h3>
-        <p><strong>Nom:</strong> ${escapeHtml(formData.ownerName)}<<br>
-        <strong>Téléphone:</strong> ${escapeHtml(formData.ownerPhone || 'Non renseigné')}</p>
+<h4>Patient</h4>
+Nom: ${escapeHtml(formData.patientName)}<br>
+Espèce: ${escapeHtml(formData.patientSpecies)}<br>
 
-        <h3>Motif</h3>
-        <p><strong>Motif:</strong> ${escapeHtml(formData.referralReason)}</p>
-        <h4>Historique clinique</h4>
-        <p>${escapeHtml(formData.clinicalHistory).split('\n').join('<br>')}</p>
-        <h4>Traitements en cours</h4>
-        <p>${escapeHtml(formData.treatments || 'Aucun').split('\n').join('<br>')}</p>
-        <h4>Infos complémentaires</h4>
-        <p>${escapeHtml(formData.additionalInfo || 'Aucune').split('\n').join('<br>')}</p>`;
+<h4>Motif</h4>
+${escapeHtml(formData.referralReason)}
 
+<h4>Historique</h4>
+${escapeHtml(formData.clinicalHistory).replace(/\n/g, '<br>')}
+`;
     } else {
-      // === FORMULAIRE CONTACT CLIENT ===
       if (!formData.name || !formData.email || !formData.message) {
         return new Response(JSON.stringify({ error: 'Champs requis manquants' }), {
           status: 400,
@@ -87,40 +82,29 @@ export async function onRequestPost(context) {
 
       subject = `Nouveau message de ${formData.name}`;
 
-      htmlBody = `<h2>Nouveau message depuis le formulaire de contact</h2>
-        <p><strong>Nom :</strong> ${escapeHtml(formData.name)}</p>
-        <p><strong>Email :</strong> ${escapeHtml(formData.email)}</p>
-        <p><strong>Type d'animal :</strong> ${escapeHtml(formData.animal || 'Non spécifié')}</p>
-        <p><strong>Message :</strong></p>
-        <p>${escapeHtml(formData.message).split('\n').join('<br>')}</p>`;
-    }
+      htmlBody = `
+<h3>Nouveau message</h3>
 
-    // Pièces jointes (uniquement référencement)
-    const attachments = [];
-    if (isReferral && formData.attachments && Array.isArray(formData.attachments)) {
-      for (const att of formData.attachments) {
-        if (att.filename && att.content) {
-          attachments.push({ filename: att.filename, content: att.content });
-        }
-      }
+Nom: ${escapeHtml(formData.name)}<br>
+Email: ${escapeHtml(formData.email)}<br>
+
+Message:<br>
+${escapeHtml(formData.message).replace(/\n/g, '<br>')}
+`;
     }
 
     const resendPayload = {
       from: fromEmail,
       to: [toEmail],
       reply_to: isReferral ? formData.vetEmail : formData.email,
-      subject: subject,
+      subject,
       html: htmlBody
     };
-
-    if (attachments.length > 0) {
-      resendPayload.attachments = attachments;
-    }
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(resendPayload)
@@ -128,14 +112,18 @@ export async function onRequestPost(context) {
 
     if (!res.ok) {
       const err = await res.text();
-      return new Response(JSON.stringify({
-        error: `Resend ${res.status}: ${err}`
-      }), { status: 502, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+      return new Response(JSON.stringify({ error: err }), {
+        status: 502,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
     }
 
     const data = await res.json();
 
-    return new Response(JSON.stringify({ success: true, id: data.id, type: isReferral ? 'referral' : 'contact' }), {
+    return new Response(JSON.stringify({
+      success: true,
+      id: data.id
+    }), {
       status: 200,
       headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
