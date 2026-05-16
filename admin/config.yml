@@ -3,8 +3,8 @@ backend:
   repo: "adrienleleuchhenvt-afk/siteSV"
   branch: main
   auth_scope: public_repo
-  base_url: https://sitesv.pages.dev      # ← ton domaine Cloudflare Pages
-  auth_endpoint: /api/auth                    # ← chemin vers ta Function
+  base_url: https://sitesv.pages.dev
+  auth_endpoint: /api/auth
 
 local_backend: true
 
@@ -26,7 +26,7 @@ collections:
             summary: "{{fields.title}}"
             fields:
               - { label: "Titre", name: "title", widget: "string" }
-              - { label: "Slug", name: "slug", widget: "string", hint: "Ex. proteger-chien-chaleur-estivale" }
+              - { label: "Slug", name: "slug", widget: "string" }
               - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
               - { label: "Catégorie", name: "category", widget: "string" }
               - { label: "Image", name: "image", widget: "image", required: false }
