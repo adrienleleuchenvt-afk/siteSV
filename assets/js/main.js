@@ -107,64 +107,52 @@
         // Team members data
         const teamData = {
             sophie: {
-                name: "Dr. Sophie Martin",
-                role: "Vétérinaire - Fondatrice",
+                name: "Dr. Adrien Le Leuch",
+                role: "Médecine interne & cardiologie",
                 image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop",
-                tags: ["Médecine générale", "Dermatologie", "Fondatrice"],
-                bio: "Passionnée par les animaux depuis son plus jeune âge, le Dr. Sophie Martin a fondé la Clinique Vétérinaire du Parc en 2008 avec la vision d'offrir des soins d'excellence dans un cadre chaleureux. Diplômée de l'École Nationale Vétérinaire de Lyon, elle a consacré sa carrière à la médecine des petits animaux et à la formation des nouvelles générations de vétérinaires. Sa patience légendaire et son approche douce font d'elle une référence auprès des propriétaires d'animaux anxieux.",
+                tags: ["Médecine interne", "Cardiologie", "CEAV Médecine interne"],
+                bio: "Le Dr. Adrien Le Leuch est spécialiste en médecine interne et cardiologie vétérinaire. Diplômé du CEAV de médecine interne, il accompagne les cas complexes avec une expertise diagnostic poussée et un suivi médical précis. Sa pratique se concentre sur les maladies cardiaques, métaboliques et inflammatoires des petits animaux.",
                 diplomas: [
-                    { year: "2003", name: "Doctorat en Médecine Vétérinaire", school: "ENV Lyon" },
-                    { year: "2005", name: "DESV en Dermatologie Vétérinaire", school: "ENV Lyon" },
-                    { year: "2008", name: "Certificat en Médecine du Comportement", school: "Université de Cambridge" },
-                    { year: "2015", name: "Formation en Acupuncture Vétérinaire", school: "IVAS - USA" },
-                    { year: "2020", name: "DU en Médecine Intégrative", school: "Université Paris-Saclay" }
+                    { year: "2021", name: "CEAV Médecine interne", school: "Collège Européen d'Anesthésie Vétérinaire" },
+                    { year: "2015", name: "Doctorat en Médecine Vétérinaire", school: "ENV" }
                 ],
-                specialties: "Médecine générale canine et féline, dermatologie avancée, médecine du comportement, acupuncture vétérinaire, gestion du stress chez les animaux de compagnie."
+                specialties: "Cardiologie vétérinaire, médecine interne, maladies métaboliques, suivi de l'insuffisance cardiaque, diagnostics complexes et gestion des pathologies chroniques."
             },
             lucas: {
-                name: "Dr. Lucas Bernard",
-                role: "Chirurgien Vétérinaire",
+                name: "Dr. Maxime Bousses",
+                role: "Chirurgie, traumatologie ostéo-articulaire et orthopédie animale",
                 image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop",
-                tags: ["Chirurgie", "Orthopédie", "Imagerie"],
-                bio: "Le Dr. Lucas Bernard est notre expert en chirurgie. Après un internat de 4 ans dans un centre hospitalier universitaire vétérinaire, il a rejoint notre équipe en 2015 pour développer notre bloc opératoire. Spécialisé en chirurgie orthopédique et en chirurgie mini-invasive (arthroscopie), il réalise plus de 500 interventions par an avec un taux de réussite exceptionnel. Son calme et sa précision sont rassurants tant pour les animaux que pour leurs propriétaires.",
+                tags: ["Chirurgie", "Orthopédie", "Traumatologie"],
+                bio: "Le Dr. Maxime Bousses est notre spécialiste des interventions chirurgicales et des traumatismes ostéo-articulaires. Diplômé du CES Traumatologie ostéo-articulaire et orthopédie animale, il maîtrise les techniques chirurgicales les plus avancées pour restaurer la mobilité et le confort des animaux.",
                 diplomas: [
-                    { year: "2006", name: "Doctorat en Médecine Vétérinaire", school: "ENV Maisons-Alfort" },
-                    { year: "2010", name: "DESV en Chirurgie Vétérinaire", school: "ENV Maisons-Alfort" },
-                    { year: "2012", name: "Internat en Chirurgie Orthopédique", school: "CHU Vétérinaire de Liège" },
-                    { year: "2014", name: "Certificat en Arthroscopie", school: "AO VET - Suisse" },
-                    { year: "2019", name: "Formation en Chirurgie Mini-Invasive", school: "Royal Veterinary College, Londres" }
+                    { year: "2022", name: "CES Traumatologie ostéo-articulaire et orthopédie animale", school: "Collège Européen Vétérinaire" },
+                    { year: "2014", name: "Doctorat en Médecine Vétérinaire", school: "ENV" }
                 ],
-                specialties: "Chirurgie orthopédique (fractures, dysplasies), chirurgie mini-invasive et arthroscopie, chirurgie des tissus mous, imagerie chirurgicale, gestion de la douleur post-opératoire."
+                specialties: "Chirurgie orthopédique, prise en charge des fractures, traumatologie ostéo-articulaire, prothèses et fixateurs externes, réhabilitation post-opératoire."
             },
             emma: {
-                name: "Dr. Emma Petit",
-                role: "Médecine Interne",
+                name: "Dr. Lucie Lengellé",
+                role: "Comportement animal",
                 image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop",
-                tags: ["Cardiologie", "Néphrologie", "Endocrinologie"],
-                bio: "Le Dr. Emma Petit apporte une expertise pointue en médecine interne à notre clinique. Formée dans les meilleurs centres hospitaliers français, elle a développé une approche diagnostique rigoureuse et méthodique. Son domaine de prédilection est la cardiologie vétérinaire : elle dispose d'un échographe cardiaque de dernière génération et réalise des électrocardiogrammes interprétés en temps réel. Elle est également très investie dans la sensibilisation à l'obésité animale et ses conséquences.",
+                tags: ["Comportement", "CEAV", "Animaux domestiques"],
+                bio: "Le Dr. Lucie Lengellé est spécialisée en comportement animal. Titulaire du CEAV Médecine du comportement des animaux domestiques, elle aide les propriétaires à comprendre et modifier les comportements indésirables grâce à des protocoles personnalisés et respectueux du bien-être animal.",
                 diplomas: [
-                    { year: "2008", name: "Doctorat en Médecine Vétérinaire", school: "ENV Toulouse" },
-                    { year: "2012", name: "DESV en Médecine Interne", school: "ENV Toulouse" },
-                    { year: "2014", name: "DU en Cardiologie Vétérinaire", school: "Université de Milan" },
-                    { year: "2017", name: "Formation en Échocardiographie", school: "Virginia-Maryland College" },
-                    { year: "2022", name: "Certificat en Endocrinologie", school: "ACVIM - USA" }
+                    { year: "2023", name: "CEAV Médecine du comportement des animaux domestiques", school: "Collège Européen d'Anesthésie Vétérinaire" },
+                    { year: "2016", name: "Doctorat en Médecine Vétérinaire", school: "ENV" }
                 ],
-                specialties: "Cardiologie (insuffisance cardiaque, cardiomyopathie), néphrologie (insuffisance rénale chronique), endocrinologie (diabète, maladies de la thyroïde), oncologie médicale, nutrition clinique."
+                specialties: "Évaluation du comportement, prise en charge des troubles du comportement, rééducation comportementale, socialisation et adaptation des animaux domestiques, approche positive et scientifique."
             },
             julie: {
-                name: "Julie Moreau",
-                role: "ASV & Réception",
+                name: "Dr. Alexis Racine",
+                role: "Ophtalmologie",
                 image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop",
-                tags: ["Soins infirmiers", "Accueil", "Conseils"],
-                bio: "Julie Moreau est le cœur battant de notre clinique. Auxiliaire Spécialisée Vétérinaire diplômée depuis 2010, elle assure la coordination des soins, l'accueil des clients et l'assistance lors des consultations et interventions. Sa bienveillance naturelle et son sens de l'organisation font d'elle une interlocutrice privilégiée pour les propriétaires. Julie est également formée aux premiers secours animaliers et anime régulièrement des ateliers de sensibilisation en milieu scolaire.",
+                tags: ["Ophtalmologie", "Vision animale", "Chirurgie oculaire"],
+                bio: "Le Dr. Alexis Racine est spécialisé en ophtalmologie vétérinaire. Titulaire d'un DE d'Ophtalmologie, il traite les pathologies oculaires des petits animaux, de la cataracte aux ulcères cornéens, en passant par les glaucomes et les blessures traumatiques de l'œil.",
                 diplomas: [
-                    { year: "2010", name: "Brevet Professionnel ASV", school: "Lycée Agricole de Rambouillet" },
-                    { year: "2013", name: "Formation en Anesthésie Vétérinaire", school: "AFVAC" },
-                    { year: "2016", name: "Certificat en Soins Intensifs", school: "ISVPA" },
-                    { year: "2019", name: "Formation en Communication Client", school: "IFAC" },
-                    { year: "2023", name: "Attestation de Premiers Secours Animaliers", school: "Croix-Rouge Française" }
+                    { year: "2024", name: "DE d'Ophtalmologie", school: "Collège Européen Vétérinaire" },
+                    { year: "2017", name: "Doctorat en Médecine Vétérinaire", school: "ENV" }
                 ],
-                specialties: "Assistance aux consultations et chirurgies, gestion des soins infirmiers, accueil et conseil clientèle, gestion des stocks médicaux, éducation et prévention, premiers secours animaliers."
+                specialties: "Examens oculaires approfondis, chirurgie ophtalmologique, prise en charge des infections et inflammations oculaires, gestion des glaucomes et des troubles de la vision, consultations de suivi post-opératoire."
             }
         };
 
