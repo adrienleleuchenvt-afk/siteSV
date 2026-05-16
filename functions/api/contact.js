@@ -101,11 +101,58 @@ ${escapeHtml(formData.message).replace(/\n/g, '<br>')}
       html: htmlBody
     };
 
-    // Ajouter les pièces jointes si présentes
+    // Ajouter les pièces jointes si présentes (avec validation)
     if (isReferral && formData.attachments && Array.isArray(formData.attachments) && formData.attachments.length > 0) {
-      resendPayload.attachments = formData.attachments.map(att => ({
+      const attachments = formData.attachments;
+      const MAX_FILES = 5;
+      const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 Mo
+      const allowedExt = ['.pdf', '.jpg', '.jpeg', '.png'];
+
+      if (attachments.length > MAX_FILES) {
+        return new Response(JSON.stringify({ error: `Maximum ${MAX_FILES} fichiers autorisés` }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      function base64ByteSize(b64) {
+        if (!b64 || typeof b64 !== 'string') return 0;
+        const len = b64.length;
+        const padding = b64.endsWith('==') ? 2 : (b64.endsWith('=') ? 1 : 0);
+        return Math.floor((len * 3) / 4) - padding;
+      }
+
+      for (const att of attachments) {
+        if (!att || !att.filename || !att.content || typeof att.content !== 'string') {
+          return new Response(JSON.stringify({ error: 'Fichier invalide : nom ou contenu manquant' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+          });
+        }
+
+        const name = String(att.filename).toLowerCase();
+        const ext = name.includes('.') ? name.substring(name.lastIndexOf('.')) : '';
+        if (!allowedExt.includes(ext)) {
+          return new Response(JSON.stringify({ error: `Type de fichier non autorisé: ${ext}` }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+          });
+        }
+
+        const size = base64ByteSize(att.content);
+        if (size > MAX_FILE_BYTES) {
+          return new Response(JSON.stringify({ error: `Fichier trop volumineux: ${att.filename} (${Math.ceil(size / (1024 * 1024))} Mo)` }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+          });
+        }
+      }
+
+      // Le client envoie `content` encodé en base64. On forwarde avec le flag d'encodage.
+      resendPayload.attachments = attachments.map(att => ({
         filename: att.filename,
-        content: Buffer.from(att.content, 'base64')
+        content: att.content,
+        encoding: 'base64'
       }));
     }
 
