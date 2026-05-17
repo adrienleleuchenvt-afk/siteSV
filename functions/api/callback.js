@@ -12,6 +12,7 @@ export async function onRequest(context) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'User-Agent': 'Cloudflare Worker',
     },
     body: JSON.stringify({
       client_id: env.GITHUB_CLIENT_ID,
@@ -19,6 +20,11 @@ export async function onRequest(context) {
       code: code,
     }),
   });
+  if (!tokenResponse.ok) {
+    const text = await tokenResponse.text();
+    return new Response('Erreur GitHub brute: ' + text,
+       { status: 500 });
+  }
   
   const tokenData = await tokenResponse.json();
   
