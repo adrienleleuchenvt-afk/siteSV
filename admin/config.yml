@@ -5,7 +5,10 @@ backend:
   auth_scope: public_repo
   base_url: https://sitesv.pages.dev
   auth_endpoint: /api/auth
-
+  editorial_workflow: true
+  editor : 
+    preview: true
+    
 local_backend: true
 
 media_folder: "assets/img"
