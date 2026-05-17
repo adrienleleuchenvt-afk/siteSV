@@ -1,3 +1,7 @@
+if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+  return new Response('GitHub OAuth credentials manquants', { status: 500 });
+}
+
 export async function onRequest(context) {
   const { env, request } = context;
   const url = new URL(request.url);
