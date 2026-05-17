@@ -2,12 +2,12 @@ backend:
   name: github
   repo: "adrienleleuchhenvt-afk/siteSV"
   branch: main
-  auth_scope: public_repo
   base_url: https://sitesv.pages.dev
+  auth_scope: public_repo
   editorial_workflow: true
   editor:
     preview: true
-    
+
 local_backend: true
 
 media_folder: "assets/img"
