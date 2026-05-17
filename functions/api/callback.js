@@ -6,10 +6,6 @@ export async function onRequest(context) {
 if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
   return new Response('GitHub OAuth credentials manquants', { status: 500 });
 }
-
-  if (!code) {
-    return new Response('Code manquant', { status: 400 });
-  }
   
   const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
     method: 'POST',

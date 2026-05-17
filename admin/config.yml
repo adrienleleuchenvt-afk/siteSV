@@ -6,7 +6,7 @@ backend:
   base_url: https://sitesv.pages.dev
   auth_endpoint: /api/auth
   editorial_workflow: true
-  editor : 
+  editor:
     preview: true
     
 local_backend: true
