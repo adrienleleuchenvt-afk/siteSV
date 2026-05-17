@@ -7,7 +7,6 @@ export async function onRequest(context) {
     return new Response('Credentials manquants', { status: 500 });
   }
 
-  // CSRF token pour sécuriser le flux
   const csrfToken = crypto.randomUUID().replaceAll('-', '');
   const params = new URLSearchParams({
     client_id: env.GITHUB_CLIENT_ID,

@@ -4,16 +4,15 @@ export async function onRequest(context) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
-  // Récupère le CSRF token du cookie
   const cookieHeader = request.headers.get('Cookie') || '';
   const match = cookieHeader.match(/\bcsrf-token=([a-z-]+?)_([0-9a-f]{32})\b/);
   const [, provider, csrfToken] = match || [];
 
   if (!code || !state) {
-    return outputHTML({ error: 'Code ou state manquant', errorCode: 'AUTH_CODE_REQUEST_FAILED' });
+    return outputHTML({ error: 'Code manquant', errorCode: 'AUTH_CODE_REQUEST_FAILED' });
   }
   if (!csrfToken || state !== csrfToken) {
-    return outputHTML({ error: 'Attaque CSRF détectée', errorCode: 'CSRF_DETECTED' });
+    return outputHTML({ error: 'CSRF détecté', errorCode: 'CSRF_DETECTED' });
   }
 
   if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
@@ -47,7 +46,6 @@ export async function onRequest(context) {
   return outputHTML({ provider: 'github', token, error });
 }
 
-// Sveltia attend ce format exact : postMessage puis window.close()
 function outputHTML({ provider = 'unknown', token, error, errorCode }) {
   const state = error ? 'error' : 'success';
   const content = error ? { provider, error, errorCode } : { provider, token };
