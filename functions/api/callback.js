@@ -26,22 +26,7 @@ export async function onRequest(context) {
     return new Response(`Erreur GitHub: ${tokenData.error_description}`, { status: 400 });
   }
   
-  // Renvoie le token à Decap via postMessage
-  const html = `
-<!DOCTYPE html>
-<html>
-<body>
-<script>
-  window.opener.postMessage({
-    type: 'authorisation',
-    payload: '${tokenData.access_token}'
-  }, '*');
-  window.close();
-</script>
-</body>
-</html>`;
+  // envoie  du token
+  return Response.redirect(`/admin/#/auth?token=${tokenData.access_token}`, 302);
   
-  return new Response(html, {
-    headers: { 'Content-Type': 'text/html' },
-  });
 }
