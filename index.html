@@ -390,8 +390,6 @@
                 <div class="contact-form fade-in">
 <form id="contactForm">
     <input type="text" id="website" name="website" style="display:none" tabindex="-1" autocomplete="off">
-    <input type="hidden" id="turnstileToken" name="turnstileToken" value="">
-    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="onTurnstileSuccess" style="margin:0.5rem 0"></div>
     
     <div class="form-group">
         <label for="name">Nom complet</label>
@@ -416,6 +414,9 @@
         <label for="message">Message</label>
         <textarea id="message" placeholder="Décrivez vos besoins..." required></textarea>
     </div>
+    <input type="hidden" id="turnstileToken" name="turnstileToken" value="">
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAADQiVSCf-gskcVGP" data-callback="onTurnstileSuccess" style="margin:0.5rem 0"></div>
+    
     <button type="submit" class="btn-submit">Envoyer la demande</button>
 </form>
                 </div>
