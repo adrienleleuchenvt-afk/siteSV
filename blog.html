@@ -7,75 +7,44 @@
     <meta name="description" content="Retrouvez nos articles santé, conseils vétérinaires et actualités de la clinique.">
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        /* Header compact pour le blog */
+        /* Header compact */
         .blog-hero {
             background: linear-gradient(135deg, #2a9d8f, #264653);
             padding: 5rem 2rem 3rem;
             text-align: center;
             color: white;
         }
-        .blog-hero h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .blog-hero p {
-            opacity: 0.85;
-            margin-bottom: 1.2rem;
+        .blog-hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .blog-hero p  { opacity: 0.85; margin-bottom: 1.2rem; }
+
+        /* Modal image */
+        .article-modal-img-wrapper img {
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 16px 16px 0 0;
         }
 
-        /* Vue article */
-        .article-view {
-            max-width: 780px;
-            margin: 2rem auto;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        /* Modal scrollable */
+        .modal-large {
+            max-width: 760px;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 0;
         }
-        .article-view .blog-image-wrapper img {
-            width: 100%;
-            max-height: 420px;
-            object-fit: cover;
+        .modal-large .modal-body {
+            padding: 2rem 2.5rem 2.5rem;
         }
-        .article-view .blog-content {
-            padding: 2rem 2.5rem;
+        .modal-large .article-body p  { margin-bottom: 1rem; }
+        .modal-large .article-body ul { margin: 1rem 0 1rem 1.5rem; }
+        .modal-large .article-body li { margin-bottom: 0.4rem; }
+        .modal-large .modal-close {
+            position: sticky;
+            top: 1rem;
+            float: right;
+            margin: 1rem 1rem 0 0;
+            z-index: 10;
         }
-        .article-view h1 {
-            font-size: 1.9rem;
-            margin: 1rem 0 0.5rem;
-            line-height: 1.3;
-        }
-        .article-excerpt {
-            font-size: 1.1rem;
-            color: #555;
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-        }
-        .article-body {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #333;
-        }
-        .article-body p { margin-bottom: 1rem; }
-        .article-body ul { margin: 1rem 0 1rem 1.5rem; }
-        .article-body li { margin-bottom: 0.4rem; }
-        .article-body h2 { margin: 1.5rem 0 0.5rem; }
-        .article-body h3 { margin: 1.2rem 0 0.4rem; }
-        .article-note {
-            margin-top: 2rem;
-            font-size: 0.85rem;
-            color: #999;
-        }
-        .back-link {
-            display: inline-block;
-            margin: 1rem 0 2rem;
-            color: #2a9d8f;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .back-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -104,6 +73,43 @@
         </div>
     </footer>
 
+    <!-- Modal article -->
+    <div id="articleModal" class="modal-overlay" onclick="closeArticleModal(event)">
+        <div class="modal-content modal-large">
+            <button class="modal-close" onclick="closeArticleModal({target:this.parentNode.parentNode,currentTarget:this.parentNode.parentNode})">✕</button>
+            <div class="article-modal-img-wrapper">
+                <img id="articleModalImg" src="" alt="">
+            </div>
+            <div class="modal-body">
+                <div class="blog-meta" style="margin-bottom:0.5rem;">
+                    <span class="category" id="articleModalCategory"></span>
+                    <span id="articleModalDate"></span>
+                </div>
+                <h2 id="articleModalTitle" style="margin:0.5rem 0 1rem;font-size:1.6rem;line-height:1.3;"></h2>
+                <p id="articleModalExcerpt" style="font-style:italic;color:#555;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid #eee;"></p>
+                <div id="articleModalBody" style="font-size:1rem;line-height:1.8;color:#333;"></div>
+                <p id="articleModalReadTime" style="margin-top:1.5rem;font-size:0.85rem;color:#999;"></p>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/blog.js"></script>
+    <script>
+        function closeArticleModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('articleModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeArticleModal();
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>

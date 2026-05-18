@@ -33,7 +33,43 @@ function slugFromUrl() {
     return params.get('slug');
 }
 
+// Ouvre le popup article (sur index.html) ou affiche inline (sur blog.html)
+function openArticleModal(post) {
+    const modal = document.getElementById('articleModal');
+    if (modal) {
+        // Mode popup (index.html)
+        document.getElementById('articleModalImg').src = post.image || 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&h=800&fit=crop';
+        document.getElementById('articleModalImg').alt = post.title;
+        document.getElementById('articleModalCategory').textContent = post.category || '';
+        document.getElementById('articleModalDate').textContent = formatDate(post.date);
+        document.getElementById('articleModalTitle').textContent = post.title;
+        document.getElementById('articleModalExcerpt').textContent = post.excerpt;
+        document.getElementById('articleModalBody').innerHTML = markdownToHtml(post.body);
+        document.getElementById('articleModalReadTime').textContent = post.timeToRead ? `Durée de lecture : ${post.timeToRead}` : '';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeArticleModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    const modal = document.getElementById('articleModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Expose globalement pour les boutons onclick
+window.openArticleModal = openArticleModal;
+window.closeArticleModal = closeArticleModal;
+
 function createPostCard(post) {
+    const hasModal = !!document.getElementById('articleModal');
+    const action = hasModal
+        ? `onclick="openArticleModal(${JSON.stringify(post).replace(/"/g, '&quot;')})" href="#" `
+        : `href="blog.html?slug=${post.slug}"`;
+
     return `
         <article class="blog-card fade-in">
             <div class="blog-image-wrapper">
@@ -47,7 +83,7 @@ function createPostCard(post) {
                 <h3>${post.title}</h3>
                 <p>${post.excerpt}</p>
                 <div class="blog-footer">
-                    <a href="blog.html?slug=${post.slug}" class="read-more">Lire l'article →</a>
+                    <a ${action} class="read-more">Lire l'article →</a>
                     <span class="date">${post.timeToRead || ''}</span>
                 </div>
             </div>
@@ -60,11 +96,26 @@ function renderBlogGrid(posts) {
     if (!blogGrid) return;
 
     const sortedPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-    const isHomepage = !window.location.pathname.endsWith('blog.html');
-    const postsToShow = isHomepage ? sortedPosts.slice(0, 3) : sortedPosts;
+    const hasModal = !!document.getElementById('articleModal');
+
+    // Sur homepage (avec modal) : 3 articles + bouton "voir tous"
+    // Sur blog.html : tous les articles
+    const postsToShow = hasModal ? sortedPosts.slice(0, 3) : sortedPosts;
     blogGrid.innerHTML = postsToShow.map(createPostCard).join('');
 
-    // ← AJOUT : réobserver les nouvelles cartes pour le fade-in
+    // Bouton "Voir tous les articles" uniquement sur homepage
+    if (hasModal && sortedPosts.length > 0) {
+        const existing = document.getElementById('voirTousBtn');
+        if (!existing) {
+            const btn = document.createElement('div');
+            btn.id = 'voirTousBtn';
+            btn.style.cssText = 'text-align:center; margin-top:2rem;';
+            btn.innerHTML = `<a href="blog.html" class="btn btn-secondary">Voir tous les articles →</a>`;
+            blogGrid.parentNode.insertBefore(btn, blogGrid.nextSibling);
+        }
+    }
+
+    // Réactiver le fade-in sur les cartes injectées dynamiquement
     blogGrid.querySelectorAll('.fade-in').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
@@ -124,11 +175,8 @@ async function loadBlog() {
 
         if (slug) {
             const post = posts.find(item => item.slug === slug);
-            if (post) {
-                renderArticle(post);
-            } else {
-                renderNotFound();
-            }
+            if (post) renderArticle(post);
+            else renderNotFound();
         } else {
             renderBlogGrid(posts);
         }
