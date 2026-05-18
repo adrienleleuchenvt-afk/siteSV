@@ -122,7 +122,7 @@ async function loadBlog() {
         const posts = Array.isArray(data.posts) ? data.posts : [];
         const slug = slugFromUrl();
 
-        if (window.location.pathname.endsWith('blog.html') && slug) {
+        if (slug) {
             const post = posts.find(item => item.slug === slug);
             if (post) {
                 renderArticle(post);
