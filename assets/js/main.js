@@ -245,11 +245,12 @@
 
         // Close modal with Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-                closeServiceModal();
-            }
-        });
+    if (e.key === 'Escape') {
+        closeModal();
+        closeServiceModal();
+        closeArticleModal();  // ← ajouter cette ligne
+    }
+});
 
         // Mobile menu toggle
         function toggleMenu() {
