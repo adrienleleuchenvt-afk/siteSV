@@ -6,15 +6,84 @@
     <title>Blog - Sancéa Vet</title>
     <meta name="description" content="Retrouvez nos articles santé, conseils vétérinaires et actualités de la clinique.">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        /* Header compact pour le blog */
+        .blog-hero {
+            background: linear-gradient(135deg, #2a9d8f, #264653);
+            padding: 5rem 2rem 3rem;
+            text-align: center;
+            color: white;
+        }
+        .blog-hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .blog-hero p {
+            opacity: 0.85;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Vue article */
+        .article-view {
+            max-width: 780px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .article-view .blog-image-wrapper img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+        }
+        .article-view .blog-content {
+            padding: 2rem 2.5rem;
+        }
+        .article-view h1 {
+            font-size: 1.9rem;
+            margin: 1rem 0 0.5rem;
+            line-height: 1.3;
+        }
+        .article-excerpt {
+            font-size: 1.1rem;
+            color: #555;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .article-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #333;
+        }
+        .article-body p { margin-bottom: 1rem; }
+        .article-body ul { margin: 1rem 0 1rem 1.5rem; }
+        .article-body li { margin-bottom: 0.4rem; }
+        .article-body h2 { margin: 1.5rem 0 0.5rem; }
+        .article-body h3 { margin: 1.2rem 0 0.4rem; }
+        .article-note {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #999;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 1rem 0 2rem;
+            color: #2a9d8f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
-    <header class="hero">
-        <div class="hero-container">
-            <div class="hero-content fade-in">
-                <h1>Le blog de Sancéa Vet</h1>
-                <p>Articles, conseils et actualités pour aider vos animaux à rester en bonne santé.</p>
-                <a href="index.html" class="btn btn-secondary">Retour à l'accueil</a>
-            </div>
+    <header class="blog-hero">
+        <div>
+            <h1>Le blog de Sancéa Vet</h1>
+            <p>Articles, conseils et actualités pour aider vos animaux à rester en bonne santé.</p>
+            <a href="index.html" class="btn btn-secondary">← Retour à l'accueil</a>
         </div>
     </header>
 
