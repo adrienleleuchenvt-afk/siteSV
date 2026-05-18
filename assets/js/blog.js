@@ -66,12 +66,12 @@ window.closeArticleModal = closeArticleModal;
 
 function createPostCard(post) {
     const hasModal = !!document.getElementById('articleModal');
-    const action = hasModal
-        ? `onclick="openArticleModal(${JSON.stringify(post).replace(/"/g, '&quot;')})" href="#" `
-        : `href="blog.html?slug=${post.slug}"`;
+    const cardAction = hasModal
+        ? `onclick="openArticleModal(${JSON.stringify(post).replace(/"/g, '&quot;')})" style="cursor:pointer;"`
+        : `onclick="location.href='blog.html?slug=${post.slug}'" style="cursor:pointer;"`;
 
     return `
-        <article class="blog-card fade-in">
+        <article class="blog-card fade-in" ${cardAction}>
             <div class="blog-image-wrapper">
                 <img src="${post.image || 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&h=800&fit=crop'}" alt="${post.title}">
             </div>
@@ -83,7 +83,6 @@ function createPostCard(post) {
                 <h3>${post.title}</h3>
                 <p>${post.excerpt}</p>
                 <div class="blog-footer">
-                    <a ${action} class="read-more">Lire l'article →</a>
                     <span class="date">${post.timeToRead || ''}</span>
                 </div>
             </div>
