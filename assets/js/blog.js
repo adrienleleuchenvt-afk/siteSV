@@ -60,7 +60,20 @@ function renderBlogGrid(posts) {
     if (!blogGrid) return;
 
     const sortedPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-    blogGrid.innerHTML = sortedPosts.map(createPostCard).join('');
+    const isHomepage = !window.location.pathname.endsWith('blog.html');
+    const postsToShow = isHomepage ? sortedPosts.slice(0, 3) : sortedPosts;
+    blogGrid.innerHTML = postsToShow.map(createPostCard).join('');
+
+    // ← AJOUT : réobserver les nouvelles cartes pour le fade-in
+    blogGrid.querySelectorAll('.fade-in').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        setTimeout(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, 100);
+    });
 }
 
 function renderArticle(post) {
