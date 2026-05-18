@@ -9,14 +9,13 @@ export async function onRequest(context) {
   const [, provider, csrfToken] = match || [];
 
   if (!code || !state) {
-    return outputHTML({ error: 'Code manquant', errorCode: 'AUTH_CODE_REQUEST_FAILED' });
+    return outputHTML({ provider: 'github', error: 'Code manquant', errorCode: 'AUTH_CODE_REQUEST_FAILED' });
   }
   if (!csrfToken || state !== csrfToken) {
-    return outputHTML({ error: 'CSRF détecté', errorCode: 'CSRF_DETECTED' });
+    return outputHTML({ provider: 'github', error: 'CSRF détecté', errorCode: 'CSRF_DETECTED' });
   }
-
   if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
-    return outputHTML({ error: 'Credentials manquants', errorCode: 'MISCONFIGURED_CLIENT' });
+    return outputHTML({ provider: 'github', error: 'Credentials manquants', errorCode: 'MISCONFIGURED_CLIENT' });
   }
 
   let response;
@@ -31,7 +30,7 @@ export async function onRequest(context) {
       }),
     });
   } catch {
-    return outputHTML({ error: 'Échec requête token', errorCode: 'TOKEN_REQUEST_FAILED' });
+    return outputHTML({ provider: 'github', error: 'Échec requête token', errorCode: 'TOKEN_REQUEST_FAILED' });
   }
 
   let token = '', error = '';
@@ -40,22 +39,29 @@ export async function onRequest(context) {
     token = data.access_token;
     error = data.error;
   } catch {
-    return outputHTML({ error: 'Réponse invalide', errorCode: 'MALFORMED_RESPONSE' });
+    return outputHTML({ provider: 'github', error: 'Réponse invalide', errorCode: 'MALFORMED_RESPONSE' });
   }
 
-  return outputHTML({ provider: 'github', token, error });
+  return outputHTML({ provider: provider || 'github', token, error });
 }
 
-function outputHTML({ provider = 'unknown', token, error, errorCode }) {
-  const state = error ? 'error' : 'success';
-  const content = error ? { provider, error, errorCode } : { provider, token };
+function outputHTML({ provider = 'github', token, error, errorCode }) {
+  // Format attendu par Sveltia/Decap/Netlify CMS :
+  // "authorization:github:success:{...}" ou "authorization:github:error:{...}"
+  const status = error ? 'error' : 'success';
+  const content = error
+    ? JSON.stringify({ error, errorCode })
+    : JSON.stringify({ token, provider });
+
+  const message = `authorization:${provider}:${status}:${content}`;
+
   return new Response(
     `<!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="UTF-8"><title>Auth</title></head>
 <body>
 <script>
-  window.opener.postMessage(${JSON.stringify(JSON.stringify({ state, content }))}, '*');
+  window.opener.postMessage(${JSON.stringify(message)}, '*');
   window.close();
 </script>
 </body>
