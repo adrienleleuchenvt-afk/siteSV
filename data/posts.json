@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "title": "Ouverture de Sancéa Vet",
+      "slug": "ouverture_sancéa",
+      "date": "2026-05-18",
+      "category": "Vie de la clinique",
+      "image": "/assets/img/Capture d’écran 2026-05-18 à 14.28.10.png",
+      "excerpt": "ouverture prévue dans l'été avec une equipe de choc à découvrir bientot",
+      "timeToRead": "1min",
+      "body": "l'ouverture de la clinique est prévue pour le mois d'aout si les travaux se passe bien ."
+    },
+    {
       "title": "Protéger votre chien de la chaleur estivale",
       "slug": "proteger-chien-chaleur-estivale",
       "date": "2026-05-14",
