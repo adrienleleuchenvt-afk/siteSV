@@ -5,54 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Sancéa Vet</title>
     <meta name="description" content="Retrouvez nos articles santé, conseils vétérinaires et actualités de la clinique.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        /* Header compact */
+        /* Bandeau spécifique à la page blog */
         .blog-hero {
-            background: linear-gradient(135deg, #2a9d8f, #264653);
-            padding: 5rem 2rem 3rem;
+            background: linear-gradient(135deg, #004f4f 0%, #006e6e 100%);
+            padding: 8rem 2rem 4rem; /* padding-top pour compenser la nav fixe */
             text-align: center;
             color: white;
         }
         .blog-hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
         .blog-hero p  { opacity: 0.85; margin-bottom: 1.2rem; }
-
-        /* Modal image */
-        .article-modal-img-wrapper img {
-            width: 100%;
-            max-height: 380px;
-            object-fit: cover;
-            border-radius: 16px 16px 0 0;
-        }
-
-        /* Modal scrollable */
-        .modal-large {
-            max-width: 760px;
-            max-height: 88vh;
-            overflow-y: auto;
-            padding: 0;
-        }
-        .modal-large .modal-body {
-            padding: 2rem 2.5rem 2.5rem;
-        }
-        .modal-large .article-body p  { margin-bottom: 1rem; }
-        .modal-large .article-body ul { margin: 1rem 0 1rem 1.5rem; }
-        .modal-large .article-body li { margin-bottom: 0.4rem; }
-        .modal-large .modal-close {
-            position: sticky;
-            top: 1rem;
-            float: right;
-            margin: 1rem 1rem 0 0;
-            z-index: 10;
-        }
     </style>
 </head>
 <body>
+
+    <!-- Navigation (identique à index.html) -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span>🐾</span>
+                Sancéa Vet
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#accueil">Accueil</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#a-propos">À propos</a></li>
+                <li><a href="index.html#equipe">Équipe</a></li>
+                <li><a href="#actualites">Actualités</a></li>
+                <li><a href="referencement-veterinaire.html">Référencement</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Bandeau blog -->
     <header class="blog-hero">
         <div>
             <h1>Le blog de Sancéa Vet</h1>
             <p>Articles, conseils et actualités pour aider vos animaux à rester en bonne santé.</p>
-            <a href="index.html" class="btn btn-secondary">← Retour à l'accueil</a>
         </div>
     </header>
 
@@ -67,8 +65,32 @@
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container footer-content">
+    <!-- Footer (identique à index.html) -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>🐾 Sancéa Vet</h3>
+                <p>Votre partenaire santé pour vos animaux de compagnie depuis 2008. Engagement, compassion et excellence médicale.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="index.html#services">Nos services</a></li>
+                    <li><a href="index.html#equipe">L'équipe</a></li>
+                    <li><a href="#actualites">Actualités</a></li>
+                    <li><a href="index.html#contact">Prendre RDV</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Légal</h4>
+                <ul>
+                    <li><a href="mentions-legales.html">Mentions légales</a></li>
+                    <li><a href="politique-confidentialite.html">Politique de confidentialité</a></li>
+                    <li><a href="conditions-generales-fonctionnement.html">Conditions générales de fonctionnement</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
             <p>© 2026 Sancéa Vet. Tous droits réservés.</p>
         </div>
     </footer>
@@ -94,6 +116,7 @@
         </div>
     </div>
 
+    <script src="assets/js/main.js"></script>
     <script src="assets/js/blog.js"></script>
     <script>
         function closeArticleModal(event) {
